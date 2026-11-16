@@ -34,9 +34,9 @@ on the correct GitHub repository matching the app.
 For a general repository issue or app ideas [open an issue here][issue]
 
 
-[app-redreactor]: https://github.com/mreditor97/app-redreactor/tree/0.1.6
+[app-redreactor]: https://github.com/mreditor97/app-redreactor/tree/0.1.7
 [redreactor-issue]: https://github.com/mreditor97/app-redreactor/issues
-[redreactor-version-shield]: https://img.shields.io/badge/version-v0.1.6-blue.svg
+[redreactor-version-shield]: https://img.shields.io/badge/version-v0.1.7-blue.svg
 
 [redreactor-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 

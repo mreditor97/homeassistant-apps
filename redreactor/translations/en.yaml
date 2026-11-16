@@ -3,15 +3,169 @@ configuration:
   mqtt:
     name: MQTT
     description: MQTT Configuration options
+    fields:
+      broker:
+        name: MQTT broker
+        description: >-
+          Hostname or IP address of your MQTT broker. Leave empty to use the
+          Mosquitto broker app
+      port:
+        name: MQTT port
+        description: Port of your MQTT broker
+      user:
+        name: MQTT username
+        description: Username for your MQTT broker
+      password:
+        name: MQTT password
+        description: Password for your MQTT broker
+      client_id:
+        name: MQTT client ID
+        description: MQTT client ID, must be unique on the broker
+      tls:
+        name: TLS
+        description: Encrypt the MQTT connection with TLS
+        fields:
+          enabled:
+            name: Enable TLS
+            description: Encrypt the MQTT connection
+          ca_certs:
+            name: CA certificate
+            description: >-
+              Path to the CA certificate, for example /ssl/ca.crt. Leave empty
+              to use the system CA certificates
+          certfile:
+            name: Client certificate
+            description: >-
+              Path to the client certificate, for example /ssl/client.crt.
+              Only needed for client certificate login
+          keyfile:
+            name: Client key
+            description: >-
+              Path to the client private key, for example /ssl/client.key.
+              Only needed for client certificate login
+          insecure:
+            name: Skip TLS hostname check
+            description: >-
+              Don't check the broker's hostname against its certificate. For
+              testing only
   hostname:
     name: Hostname
-    description: Configure the device name, incase you have multiple Red Reactors on the same MQTT server
+    description: >-
+      Configure the device name, in case you have multiple Red Reactors on the
+      same MQTT server
+    fields:
+      name:
+        name: Hostname
+        description: >-
+          Used as an MQTT topic level, so it can't contain /, + or #
+      pretty:
+        name: Display name
+        description: Friendly name of the device shown in Home Assistant
   homeassistant:
     name: Home Assistant
     description: Home Assistant MQTT Discovery configuration
+    fields:
+      discovery:
+        name: MQTT Discovery
+        description: Create the Red Reactor device in Home Assistant
+      discovery_interval:
+        name: Discovery interval
+        description: >-
+          How often in seconds the Home Assistant MQTT Discovery configuration
+          is published (1 to 86400, or 0 to only publish it on connect and
+          when Home Assistant restarts)
+      expire_after:
+        name: Expire after
+        description: >-
+          Seconds after which Home Assistant marks the sensors as unavailable
+          if no new data arrives (0 turns it off). Raised to at least twice
+          the report interval plus 30 seconds, so a long report interval
+          doesn't leave them unavailable between reports
+      status_topic:
+        name: Birth message topic
+        description: >-
+          Topic Home Assistant publishes its birth message on. Red Reactor
+          resends its discovery and latest readings when it arrives (default
+          homeassistant/status)
+      status_online:
+        name: Birth message payload
+        description: >-
+          Payload of the Home Assistant birth message (default online)
+  ina:
+    name: Red Reactor sensor
+    description: >-
+      I2C address of the Red Reactor's INA219 (default 64, which is 0x40) and
+      how often in seconds it is read (default 5). Only change these if you
+      know you need to
+    fields:
+      address:
+        name: I2C address
+        description: >-
+          I2C address of the INA219, from 3 to 119 (default 64, which is 0x40)
+      monitor_interval:
+        name: Monitor interval
+        description: >-
+          Seconds between battery readings, from 1 to 60 (default 5)
+      adc_samples:
+        name: Samples per reading
+        description: >-
+          How many samples the INA219 averages for each reading (default 1).
+          More samples give steadier readings
+  battery:
+    name: Battery
+    description: >-
+      Battery settings used to work out the battery level. When a voltage
+      curve is set, the battery voltage minimum and maximum no longer affect
+      the level
+    fields:
+      internal_resistance:
+        name: Internal resistance
+        description: >-
+          Battery internal resistance in milliohms, used to correct the voltage
+          for the sag under load (default 35, 0 turns it off)
+      average_readings:
+        name: Average readings
+        description: >-
+          How many readings are averaged for the battery level, from 1 to 100
+          (default 6, 1 turns it off)
+      shutdown_readings:
+        name: Shutdown readings
+        description: >-
+          How many readings in a row must be at or below the shutdown level,
+          on battery, before the shutdown starts, from 1 to 20 (default 3)
+      report_level_change:
+        name: Report level change
+        description: >-
+          Battery level change, in percentage points, that is reported
+          straight away rather than at the next report interval (default 5,
+          0 turns it off)
+      curve:
+        name: Voltage curve
+        description: >-
+          Resting voltage and battery level % points, at least 2 with rising
+          voltages. Leave empty for a straight line between the battery voltage
+          minimum and maximum
   system:
     name: System Configuration
     description: The command required to Shutdown or Restart the system
+    fields:
+      shutdown:
+        name: Shutdown command
+        description: >-
+          Command used to shut down the system. Leave empty to use the
+          Supervisor API, which is right for Home Assistant OS
+      restart:
+        name: Restart command
+        description: >-
+          Command used to restart the system. Leave empty to use the
+          Supervisor API, which is right for Home Assistant OS
   logging:
     name: Logging
     description: Configure the logging levels for both file logging and console logging
+    fields:
+      console:
+        name: Console log level
+        description: Logging level for the app log shown in Home Assistant
+      file:
+        name: File log level
+        description: Logging level for the log file

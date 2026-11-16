@@ -1,53 +1,74 @@
 name: Red Reactor Battery Monitor
 description: Red Reactor Battery Monitoring service
-version: 0.1.6
+version: 0.1.7
 slug: redreactor
 url: https://github.com/mreditor97/app-redreactor
 startup: services
 arch:
 - aarch64
 init: false
-privileged:
-- SYS_ADMIN
 devices:
 - /dev/i2c-1
+map:
+- ssl:ro
 hassio_api: true
 hassio_role: manager
 services:
 - mqtt:want
 options:
   mqtt:
-    broker: core-mosquitto
-    port: 1883
-    user: redreactor
-    password: redreactor
+    tls:
+      enabled: false
   hostname:
     name: redreactor-pi
     pretty: Raspberry Pi
   homeassistant:
     discovery_interval: 120
     expire_after: 120
-  system:
-    shutdown: ha host shutdown
-    restart: ha host restart
+  ina: {}
+  battery:
+    curve: []
+  system: {}
   logging:
     console: INFO
     file: WARNING
 schema:
   mqtt:
-    broker: str
-    port: port
-    user: str
-    password: password
+    broker: match(^\S+$)?
+    port: port?
+    user: str?
+    password: password?
+    client_id: str?
+    tls:
+      enabled: bool
+      ca_certs: str?
+      certfile: str?
+      keyfile: str?
+      insecure: bool?
   hostname:
-    name: str
-    pretty: str
+    name: match(^[^/+#]+$)
+    pretty: match(^.*\S.*$)
   homeassistant:
-    discovery_interval: int
-    expire_after: int
+    discovery: bool?
+    discovery_interval: int(0,86400)
+    expire_after: int(0,)
+    status_topic: match(^[^+#]+$)?
+    status_online: match(^.+$)?
+  ina:
+    address: int(3,119)?
+    monitor_interval: int(1,60)?
+    adc_samples: list(1|2|4|8|16|32|64|128)?
+  battery:
+    internal_resistance: float(0,)?
+    average_readings: int(1,100)?
+    shutdown_readings: int(1,20)?
+    report_level_change: int(0,100)?
+    curve:
+    - voltage: float
+      level: float(0,100)
   system:
-    shutdown: str
-    restart: str
+    shutdown: str?
+    restart: str?
   logging:
     console: list(DEBUG|INFO|WARNING|ERROR|CRITICAL)
     file: list(DEBUG|INFO|WARNING|ERROR|CRITICAL)
