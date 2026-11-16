@@ -12,6 +12,7 @@ installed and configured from within the Home Assistant frontend.
 
 Red Reactor Battery Monitoring service
 
+
 ## Releases
 
 Releases are based on [Semantic Versioning][semver], and use the format
@@ -32,6 +33,7 @@ on the correct GitHub repository matching the app.
 
 For a general repository issue or app ideas [open an issue here][issue]
 
+
 [app-redreactor]: https://github.com/mreditor97/app-redreactor/tree/0.1.6
 [redreactor-issue]: https://github.com/mreditor97/app-redreactor/issues
 [redreactor-version-shield]: https://img.shields.io/badge/version-v0.1.6-blue.svg
@@ -39,6 +41,7 @@ For a general repository issue or app ideas [open an issue here][issue]
 [redreactor-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 
 [redreactor-amd64-shield]: https://img.shields.io/badge/amd64-no-red.svg
+
 
 [issue]: https://github.com/mreditor97/homeassistant-apps/issues
 [semver]: http://semver.org/spec/v2.0.0.html
